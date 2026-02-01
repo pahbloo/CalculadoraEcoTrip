@@ -610,7 +610,10 @@ calculatorForm.addEventListener('submit', function(e) {
     
     // Validation
     if (!origin || !destination) {
-        alert('Por favor, preencha origem e destino.');
+        const missingFields = [];
+        if (!origin) missingFields.push('origem');
+        if (!destination) missingFields.push('destino');
+        alert(`Por favor, preencha ${missingFields.join(' e ')}.`);
         return;
     }
     
@@ -654,10 +657,10 @@ if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
         navigator.serviceWorker.register('sw.js')
             .then(function(registration) {
-                console.log('ServiceWorker registration successful');
+                console.log('ServiceWorker registered successfully with scope: ' + registration.scope);
             })
             .catch(function(err) {
-                console.log('ServiceWorker registration failed: ', err);
+                console.error('ServiceWorker registration failed: ', err);
             });
     });
 }
