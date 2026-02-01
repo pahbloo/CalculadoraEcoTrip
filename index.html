@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Calculadora de Emissão de CO₂ para viagens terrestres entre capitais brasileiras">
+    <meta name="theme-color" content="#4CAF50">
+    <title>Calculadora EcoTrip - Emissão de CO₂</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="icon-192.png">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌍 Calculadora EcoTrip</h1>
+            <p class="subtitle">Calcule a emissão de CO₂ da sua viagem terrestre</p>
+        </header>
+
+        <main>
+            <form id="calculatorForm" class="calculator-form">
+                <div class="form-group">
+                    <label for="origin">Origem:</label>
+                    <input type="text" id="origin" name="origin" autocomplete="off" 
+                           placeholder="Digite a capital de origem" required>
+                    <div id="originSuggestions" class="suggestions"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="destination">Destino:</label>
+                    <input type="text" id="destination" name="destination" autocomplete="off" 
+                           placeholder="Digite a capital de destino" required>
+                    <div id="destinationSuggestions" class="suggestions"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="distance">Distância (km):</label>
+                    <input type="number" id="distance" name="distance" min="0" step="0.1" readonly>
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="manualDistance" name="manualDistance">
+                        <label for="manualDistance">Inserir distância manualmente</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Meio de transporte:</label>
+                    <div class="transport-options">
+                        <div class="transport-option">
+                            <input type="radio" id="bicycle" name="transport" value="bicycle" required>
+                            <label for="bicycle" class="transport-label">
+                                <span class="icon">🚴</span>
+                                <span>Bicicleta</span>
+                            </label>
+                        </div>
+                        <div class="transport-option">
+                            <input type="radio" id="car" name="transport" value="car">
+                            <label for="car" class="transport-label">
+                                <span class="icon">🚗</span>
+                                <span>Carro</span>
+                            </label>
+                        </div>
+                        <div class="transport-option">
+                            <input type="radio" id="bus" name="transport" value="bus">
+                            <label for="bus" class="transport-label">
+                                <span class="icon">🚌</span>
+                                <span>Ônibus</span>
+                            </label>
+                        </div>
+                        <div class="transport-option">
+                            <input type="radio" id="truck" name="transport" value="truck">
+                            <label for="truck" class="transport-label">
+                                <span class="icon">🚚</span>
+                                <span>Caminhão</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-calculate">Calcular Emissão</button>
+            </form>
+
+            <div id="results" class="results hidden">
+                <h2>Resultados</h2>
+                <div class="result-card">
+                    <div class="emission-value">
+                        <span class="label">Emissão estimada:</span>
+                        <span id="emissionValue" class="value"></span>
+                    </div>
+                    <div class="trip-details">
+                        <p><strong>Origem:</strong> <span id="resultOrigin"></span></p>
+                        <p><strong>Destino:</strong> <span id="resultDestination"></span></p>
+                        <p><strong>Distância:</strong> <span id="resultDistance"></span> km</p>
+                        <p><strong>Meio de transporte:</strong> <span id="resultTransport"></span></p>
+                    </div>
+                </div>
+
+                <div class="comparisons">
+                    <h3>Equivalências</h3>
+                    <div id="comparisonCards" class="comparison-cards"></div>
+                </div>
+
+                <div class="carbon-credits">
+                    <h3>Compense suas emissões</h3>
+                    <p>Você pode compensar a emissão de CO₂ da sua viagem através da compra de créditos de carbono:</p>
+                    <ul class="credits-links">
+                        <li><a href="https://www.moss.earth/" target="_blank" rel="noopener">Moss Earth - Créditos de Carbono</a></li>
+                        <li><a href="https://www.carbonext.com.br/" target="_blank" rel="noopener">Carbonext - Compensação de Carbono</a></li>
+                        <li><a href="https://www.iniciativaverde.org.br/calcule-e-compense" target="_blank" rel="noopener">Iniciativa Verde - Calcule e Compense</a></li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <div class="emission-factors">
+                <h3>Fatores de Emissão Utilizados</h3>
+                <table class="factors-table">
+                    <thead>
+                        <tr>
+                            <th>Meio de Transporte</th>
+                            <th>Fator de Emissão</th>
+                            <th>Fonte</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>🚴 Bicicleta</td>
+                            <td>0 kg CO₂/km</td>
+                            <td>Transporte não motorizado</td>
+                        </tr>
+                        <tr>
+                            <td>🚗 Carro</td>
+                            <td>0,192 kg CO₂/km</td>
+                            <td><a href="https://ghgprotocol.org/" target="_blank" rel="noopener">GHG Protocol</a></td>
+                        </tr>
+                        <tr>
+                            <td>🚌 Ônibus</td>
+                            <td>0,105 kg CO₂/km</td>
+                            <td>IPCC Summary</td>
+                        </tr>
+                        <tr>
+                            <td>🚚 Caminhão</td>
+                            <td>0,250 kg CO₂/km</td>
+                            <td><a href="https://ghgprotocol.org/" target="_blank" rel="noopener">GHG Protocol</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="privacy-note">🔒 Seus dados permanecem no seu navegador. Nenhuma informação é coletada ou enviada para servidores.</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
